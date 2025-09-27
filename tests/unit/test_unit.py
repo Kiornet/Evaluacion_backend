@@ -15,7 +15,7 @@ from repositories import MessageRepository
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from database import Base
-from datetime import datetime
+from datetime import datetime, UTC
 import sqlalchemy
 
 
@@ -77,15 +77,15 @@ def test_search_short_term(service: MessageService):
 
 # ---------- TESTS DE REPOSITORIO ----------
 def test_duplicate_id(repo: MessageRepository):
-    """Dos mensajes con el mismo ID deben generar IntegrityError."""
+    """Dos mensajes con el mismo ID deben generar Error."""
     msg_id = str(uuid4())
     message = {
         "message_id": msg_id,
         "session_id": "unit-session",
         "content": "Test mensaje",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(UTC),
         "sender": "user",
-        "processed_at": datetime.utcnow()
+        "processed_at": datetime.now(UTC)
     }
     repo.save(message)
 
@@ -99,17 +99,17 @@ def test_search(repo: MessageRepository):
         "message_id": str(uuid4()),
         "session_id": "search-sess",
         "content": "Buscar esto",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(UTC),
         "sender": "user",
-        "processed_at": datetime.utcnow()
+        "processed_at": datetime.now(UTC)
     }
     msg2 = {
         "message_id": str(uuid4()),
         "session_id": "search-sess",
         "content": "No coincide",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(UTC),
         "sender": "user",
-        "processed_at": datetime.utcnow()
+        "processed_at": datetime.now(UTC)
     }
     repo.save(msg1)
     repo.save(msg2)
@@ -124,17 +124,17 @@ def test_get_by_session_with_sender(repo: MessageRepository):
         "message_id": str(uuid4()),
         "session_id": "filter-sess",
         "content": "mensaje user",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(UTC),
         "sender": "user",
-        "processed_at": datetime.utcnow()
+        "processed_at": datetime.now(UTC)
     }
     msg_system = {
         "message_id": str(uuid4()),
         "session_id": "filter-sess",
         "content": "mensaje system",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(UTC),
         "sender": "system",
-        "processed_at": datetime.utcnow()
+        "processed_at": datetime.now(UTC)
     }
     repo.save(msg_user)
     repo.save(msg_system)
@@ -152,9 +152,9 @@ def test_crud_message(repo: MessageRepository):
         "message_id": msg_id,
         "session_id": "crud-sess",
         "content": "Mensaje inicial",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(UTC),
         "sender": "user",
-        "processed_at": datetime.utcnow()
+        "processed_at":datetime.now(UTC)
     }
 
     # Crear
@@ -184,9 +184,9 @@ def test_pagination(repo: MessageRepository):
             "message_id": str(uuid4()),
             "session_id": session_id,
             "content": f"msg {i}",
-            "timestamp": datetime.utcnow(),
+            "timestamp": datetime.now(UTC),
             "sender": "user",
-            "processed_at": datetime.utcnow()
+            "processed_at": datetime.now(UTC)
         })
 
     results_page1 = repo.get_by_session(session_id, limit=2, offset=0)
@@ -203,9 +203,9 @@ def test_search_case_insensitive(repo: MessageRepository):
         "message_id": str(uuid4()),
         "session_id": "case-sess",
         "content": "Texto de Prueba",
-        "timestamp": datetime.utcnow(),
+        "timestamp": datetime.now(UTC),
         "sender": "user",
-        "processed_at": datetime.utcnow()
+        "processed_at": datetime.now(UTC)
     }
     repo.save(msg)
 
