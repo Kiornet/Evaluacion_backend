@@ -206,7 +206,7 @@ GET /api/messages/{session_id}/search
 
 Ejecutar todas las pruebas (unitarias + integración):
 ```bash
-pytest --maxfail=1 --disable-warnings -q
+pytest --maxfail=1 -v
 ```
 
 Generar reporte de cobertura:
@@ -216,7 +216,7 @@ pytest --cov=. --cov-report=term-missing
 
 Ejemplo de cobertura mínima esperada:
 ```text
-TOTAL                             243     19    92%
+TOTAL                              314     18    94%
 ```
 
 ---
